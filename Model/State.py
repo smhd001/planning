@@ -9,6 +9,10 @@ class State:
     ):
         # Initialize a State object
         self.action_name = action_name  # Set the name of the action
+        for p in positive_literals:
+            assert isinstance(
+                p, Predicate
+            ), f"positive literals should be type of Predicate not {p.__class__} "
         self.positive_literals = set(
             positive_literals
         )  # Convert positive_literals to a set
