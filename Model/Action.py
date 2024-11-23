@@ -27,6 +27,30 @@ class Action:
         self.add_list = set(add_list)
         self.delete_list = set(delete_list)
 
+    def is_relevant(self, state: State) -> bool:
+        """
+        Checks if the action is relevant to the given state.
+
+        Parameters:
+        - state (State): the state to check.
+
+        Returns:
+        - True if the action is relevant to the state, False otherwise.
+        """
+        pass
+
+    def regress(self, state: State) -> State:
+        """
+        Regresses the given state with the action effects.
+
+        Parameters:
+        - state (State): the state to regress.
+
+        Returns:
+        - The new state after regressing with the action effects.
+        """
+        pass
+
     def progress(self, state: State) -> State:
         """
         Progresses the given state with the action effects.
@@ -37,7 +61,11 @@ class Action:
         Returns:
         - The new state after progressing with the action effects.
         """
-        result = ...
+        result_literals = (
+            state.literals.union(self.add_list) - self.delete_list
+        )
+
+        result = State(self.action_name, result_literals)
         return result
 
     def is_applicable(self, state: State) -> bool:
@@ -50,7 +78,9 @@ class Action:
         Returns:
         - True if action is applicable False otherwise
         """
-        ...
+        return self.positive_preconditions.issubset(
+            state.literals
+        ) and self.negative_preconditions.isdisjoint(state.literals)
 
     def __str__(self) -> str:
         return (
